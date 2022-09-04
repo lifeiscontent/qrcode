@@ -1,0 +1,14 @@
+{
+  "name": "@lifeiscontent/qrcode",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ]
+}

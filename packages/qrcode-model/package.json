@@ -1,0 +1,34 @@
+{
+  "author": "",
+  "description": "",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.2",
+    "vitest": "^0.22.1"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "keywords": [],
+  "license": "ISC",
+  "main": "./dist/cjs/index.js",
+  "name": "@lifeiscontent/qrcode-model",
+  "scripts": {
+    "build": "run-p build:*",
+    "build:mjs": "tsc --outDir ./dist/mjs --module ES2015",
+    "build:cjs": "tsc --outDir ./dist/cjs",
+    "lint": "eslint .",
+    "test": "vitest"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}

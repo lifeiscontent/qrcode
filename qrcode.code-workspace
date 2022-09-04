@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "apps/create-react-app"
+    },
+    {
+      "path": "apps/vite-react-ts"
+    },
+    {
+      "path": "packages/qrcode-react"
+    },
+    {
+      "path": "packages/qrcode-model"
+    }
+  ],
+  "settings": {}
+}

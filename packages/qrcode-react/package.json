@@ -1,0 +1,44 @@
+{
+  "author": "",
+  "dependencies": {
+    "@lifeiscontent/qrcode-model": "^1.0.0"
+  },
+  "description": "",
+  "devDependencies": {
+    "@types/react": "^18.0.18",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.4",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.7.1",
+    "react": "^18.2.0",
+    "typescript": "^4.8.2",
+    "vitest": "^0.22.1"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "keywords": [],
+  "license": "ISC",
+  "main": "dist/cjs/index.js",
+  "name": "@lifeiscontent/qrcode-react",
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "scripts": {
+    "build": "run-p build:*",
+    "build:cjs": "tsc --outDir ./dist/cjs",
+    "build:mjs": "tsc --outDir ./dist/mjs --module ES2015",
+    "lint": "eslint .",
+    "test": "vitest"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}
