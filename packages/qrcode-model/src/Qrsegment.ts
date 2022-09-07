@@ -11,14 +11,17 @@ export class Qrsegment {
   // can be converted to UTF-8 bytes and encoded as a byte mode segment.
   public static makeBytes(data: readonly byte[]): Qrsegment {
     const bb: bit[] = [];
-    for (const b of data) appendBits(b, 8, bb);
+    for (const b of data) {
+      appendBits(b, 8, bb);
+    }
     return new Qrsegment(Mode.BYTE, data.length, bb);
   }
 
   // Returns a segment representing the given string of decimal digits encoded in numeric mode.
   public static makeNumeric(digits: string): Qrsegment {
-    if (!Qrsegment.isNumeric(digits))
+    if (!Qrsegment.isNumeric(digits)) {
       throw new RangeError('String contains non-numeric characters');
+    }
     const bb: bit[] = [];
     for (let i = 0; i < digits.length; ) {
       // Consume up to 3 digits per iteration
@@ -33,8 +36,9 @@ export class Qrsegment {
   // The characters allowed are: 0 to 9, A to Z (uppercase only), space,
   // dollar, percent, asterisk, plus, hyphen, period, slash, colon.
   public static makeAlphanumeric(text: string): Qrsegment {
-    if (!Qrsegment.isAlphanumeric(text))
+    if (!Qrsegment.isAlphanumeric(text)) {
       throw new RangeError('String contains unencodable characters in alphanumeric mode');
+    }
     const bb: bit[] = [];
     let i: int;
     for (i = 0; i + 2 <= text.length; i += 2) {
@@ -43,9 +47,10 @@ export class Qrsegment {
       temp += Qrsegment.ALPHANUMERIC_CHARSET.indexOf(text.charAt(i + 1));
       appendBits(temp, 11, bb);
     }
-    if (i < text.length)
+    if (i < text.length) {
       // 1 character remaining
       appendBits(Qrsegment.ALPHANUMERIC_CHARSET.indexOf(text.charAt(i)), 6, bb);
+    }
     return new Qrsegment(Mode.ALPHANUMERIC, text.length, bb);
   }
 
@@ -53,25 +58,34 @@ export class Qrsegment {
   // The result may use various segment modes and switch modes to optimize the length of the bit stream.
   public static makeSegments(text: string): Qrsegment[] {
     // Select the most efficient segment encoding automatically
-    if (text == '') return [];
-    else if (Qrsegment.isNumeric(text)) return [Qrsegment.makeNumeric(text)];
-    else if (Qrsegment.isAlphanumeric(text)) return [Qrsegment.makeAlphanumeric(text)];
-    else return [Qrsegment.makeBytes(Qrsegment.toUtf8ByteArray(text))];
+    if (text === '') {
+      return [];
+    } else if (Qrsegment.isNumeric(text)) {
+      return [Qrsegment.makeNumeric(text)];
+    } else if (Qrsegment.isAlphanumeric(text)) {
+      return [Qrsegment.makeAlphanumeric(text)];
+    } else {
+      return [Qrsegment.makeBytes(Qrsegment.toUtf8ByteArray(text))];
+    }
   }
 
   // Returns a segment representing an Extended Channel Interpretation
   // (ECI) designator with the given assignment value.
   public static makeEci(assignVal: int): Qrsegment {
     const bb: bit[] = [];
-    if (assignVal < 0) throw new RangeError('ECI assignment value out of range');
-    else if (assignVal < 1 << 7) appendBits(assignVal, 8, bb);
-    else if (assignVal < 1 << 14) {
+    if (assignVal < 0) {
+      throw new RangeError('ECI assignment value out of range');
+    } else if (assignVal < 1 << 7) {
+      appendBits(assignVal, 8, bb);
+    } else if (assignVal < 1 << 14) {
       appendBits(0b10, 2, bb);
       appendBits(assignVal, 14, bb);
     } else if (assignVal < 1000000) {
       appendBits(0b110, 3, bb);
       appendBits(assignVal, 21, bb);
-    } else throw new RangeError('ECI assignment value out of range');
+    } else {
+      throw new RangeError('ECI assignment value out of range');
+    }
     return new Qrsegment(Mode.ECI, 0, bb);
   }
 
@@ -105,7 +119,9 @@ export class Qrsegment {
     // The data bits of this segment. Accessed through getData().
     private readonly bitData: bit[]
   ) {
-    if (numChars < 0) throw new RangeError('Invalid argument');
+    if (numChars < 0) {
+      throw new RangeError('Invalid argument');
+    }
     this.bitData = bitData.slice(); // Make defensive copy
   }
 
@@ -122,7 +138,9 @@ export class Qrsegment {
     let result = 0;
     for (const seg of segs) {
       const ccbits: int = seg.mode.numCharCountBits(version);
-      if (seg.numChars >= 1 << ccbits) return Infinity; // The segment's length doesn't fit the field's bit width
+      if (seg.numChars >= 1 << ccbits) {
+        return Infinity;
+      } // The segment's length doesn't fit the field's bit width
       result += 4 + ccbits + seg.bitData.length;
     }
     return result;
@@ -133,8 +151,9 @@ export class Qrsegment {
     str = encodeURI(str);
     const result: byte[] = [];
     for (let i = 0; i < str.length; i++) {
-      if (str.charAt(i) != '%') result.push(str.charCodeAt(i));
-      else {
+      if (str.charAt(i) !== '%') {
+        result.push(str.charCodeAt(i));
+      } else {
         result.push(parseInt(str.substr(i + 1, 2), 16));
         i += 2;
       }
