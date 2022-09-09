@@ -1,6 +1,4 @@
-import type { int, bit } from './types';
-
-export function appendBits(val: int, len: int, bb: bit[]): void {
+export function appendBits(val: number, len: number, bb: number[]): void {
   if (len < 0 || len > 31 || val >>> len !== 0) {
     throw new RangeError('Value out of range');
   }
@@ -15,7 +13,7 @@ export function appendBits(val: int, len: int, bb: bit[]): void {
 }
 
 // Returns true iff the i'th bit of x is set to 1.
-export function getBit(x: int, i: int): boolean {
+export function getBit(x: number, i: number): boolean {
   return ((x >>> i) & 1) !== 0;
 }
 
